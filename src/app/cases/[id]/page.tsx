@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Check, Circle, ChevronRight, Home, Briefcase, PiggyBank, Rocket } from "lucide-react";
+import Image from "next/image";
+import { Check, Circle, ChevronRight } from "lucide-react";
 import { cases } from "@/data/cases";
 import { categories } from "@/data/categories";
-import { Case } from "@/types";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -22,14 +22,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: c.title,
     description: c.description,
   };
-}
-
-function HeroIcon({ c }: { c: Case }) {
-  const cls = "text-emerald-200 opacity-60";
-  if (c.categories.includes("mu-tenpo")) return <Home size={96} strokeWidth={0.75} className={cls} />;
-  if (c.categories.includes("fukugyo")) return <Briefcase size={96} strokeWidth={0.75} className={cls} />;
-  if (c.categories.includes("tei-shikkin")) return <PiggyBank size={96} strokeWidth={0.75} className={cls} />;
-  return <Rocket size={96} strokeWidth={0.75} className={cls} />;
 }
 
 export default async function CaseDetailPage({ params }: Props) {
@@ -65,10 +57,18 @@ export default async function CaseDetailPage({ params }: Props) {
         <div className="lg:col-span-2 space-y-6">
           {/* Header */}
           <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-            <div className="h-48 bg-gradient-to-br from-emerald-100 to-teal-200 flex items-center justify-center relative">
-              <HeroIcon c={c} />
+            <div className="relative h-56 overflow-hidden">
+              <Image
+                src={c.imageUrl}
+                alt={c.title}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 66vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               {c.badge && (
-                <span className="absolute top-4 left-4 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                <span className="absolute top-4 left-4 bg-emerald-600 text-white text-sm font-bold px-3 py-1 rounded-full z-10">
                   {c.badge}
                 </span>
               )}

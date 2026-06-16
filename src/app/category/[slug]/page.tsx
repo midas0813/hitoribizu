@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import CaseCard from "@/components/CaseCard";
 import { cases } from "@/data/cases";
 import { categories } from "@/data/categories";
@@ -47,19 +48,32 @@ export default async function CategoryPage({ params }: Props) {
       </nav>
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-2xl p-8 mb-8">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0">
-            <HeaderIcon size={32} strokeWidth={1.5} />
-          </div>
-          <div>
-            <h1 className="text-2xl md:text-3xl font-black mb-1">{cat.name}</h1>
-            <p className="text-emerald-200 text-sm">{cat.description}</p>
-          </div>
+      <div className="relative rounded-2xl overflow-hidden mb-8">
+        <div className="relative h-48 md:h-56">
+          <Image
+            src={cat.imageUrl}
+            alt={cat.name}
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 1200px) 100vw, 1200px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/80 to-teal-900/60" />
         </div>
-        <p className="mt-4 text-emerald-100 text-sm">
-          {filteredCases.length}件の案件が見つかりました
-        </p>
+        <div className="absolute inset-0 flex flex-col justify-center px-8 text-white">
+          <div className="flex items-center gap-4 mb-3">
+            <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm">
+              <HeaderIcon size={28} strokeWidth={1.5} />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-black">{cat.name}</h1>
+              <p className="text-emerald-200 text-sm">{cat.description}</p>
+            </div>
+          </div>
+          <p className="text-emerald-100 text-sm">
+            {filteredCases.length}件の案件が見つかりました
+          </p>
+        </div>
       </div>
 
       {/* Category Filter */}

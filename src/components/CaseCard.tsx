@@ -1,17 +1,10 @@
 import Link from "next/link";
-import { Home, Briefcase, PiggyBank, Rocket } from "lucide-react";
+import Image from "next/image";
 import { Case } from "@/types";
 import { categories } from "@/data/categories";
 
 interface Props {
   case_: Case;
-}
-
-function CaseThumbnailIcon({ c }: { c: Case }) {
-  if (c.categories.includes("mu-tenpo")) return <Home size={56} strokeWidth={1} />;
-  if (c.categories.includes("fukugyo")) return <Briefcase size={56} strokeWidth={1} />;
-  if (c.categories.includes("tei-shikkin")) return <PiggyBank size={56} strokeWidth={1} />;
-  return <Rocket size={56} strokeWidth={1} />;
 }
 
 export default function CaseCard({ case_: c }: Props) {
@@ -21,19 +14,26 @@ export default function CaseCard({ case_: c }: Props) {
 
   return (
     <Link href={`/cases/${c.id}`} className="group block bg-white rounded-xl border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all duration-200 overflow-hidden">
-      <div className="relative h-40 bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center text-emerald-300">
-        <CaseThumbnailIcon c={c} />
+      <div className="relative h-44 overflow-hidden">
+        <Image
+          src={c.imageUrl}
+          alt={c.title}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-300"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
         {c.badge && (
-          <span className="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+          <span className="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
             {c.badge}
           </span>
         )}
         {c.isNew && !c.badge && (
-          <span className="absolute top-3 left-3 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+          <span className="absolute top-3 left-3 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
             新着
           </span>
         )}
-        <span className="absolute bottom-3 right-3 bg-white/90 text-emerald-700 text-xs font-semibold px-2 py-1 rounded-full">
+        <span className="absolute bottom-3 right-3 bg-white/90 text-emerald-700 text-xs font-semibold px-2 py-1 rounded-full z-10">
           開業{c.startupPeriod}
         </span>
       </div>

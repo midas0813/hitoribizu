@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import CaseCard from "@/components/CaseCard";
 import { cases } from "@/data/cases";
 import { categories } from "@/data/categories";
@@ -11,32 +12,60 @@ export default function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 text-white py-16 md:py-24">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-emerald-200 text-sm font-medium mb-3 tracking-wide uppercase">
-            一人開業・副業・小資本フランチャイズ比較
-          </p>
-          <h1 className="text-3xl md:text-5xl font-black leading-tight mb-4">
-            ひとりで始める、<br className="md:hidden" />
-            自分の仕事を見つけよう
-          </h1>
-          <p className="text-emerald-100 text-base md:text-lg max-w-xl mx-auto leading-relaxed mb-8">
-            一人開業・副業・低資金・無店舗など、
-            小さく始めてしっかり稼げるフランチャイズ案件を無料で比較・資料請求できます。
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/cases"
-              className="bg-white text-emerald-700 font-bold px-8 py-3 rounded-full hover:bg-emerald-50 transition-colors text-sm md:text-base"
-            >
-              案件をすべて見る
-            </Link>
-            <Link
-              href="/request"
-              className="bg-emerald-500 text-white font-bold px-8 py-3 rounded-full border-2 border-emerald-400 hover:bg-emerald-400 transition-colors text-sm md:text-base"
-            >
-              無料で資料請求する
-            </Link>
+      <section className="bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 text-white overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 py-14 md:py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            <div>
+              <p className="text-emerald-200 text-sm font-medium mb-3 tracking-wide uppercase">
+                一人開業・副業・小資本フランチャイズ比較
+              </p>
+              <h1 className="text-3xl md:text-5xl font-black leading-tight mb-4">
+                ひとりで始める、<br />
+                自分の仕事を<br />見つけよう
+              </h1>
+              <p className="text-emerald-100 text-base leading-relaxed mb-8">
+                一人開業・副業・低資金・無店舗など、
+                小さく始めてしっかり稼げるフランチャイズ案件を
+                無料で比較・資料請求できます。
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/cases"
+                  className="bg-white text-emerald-700 font-bold px-8 py-3 rounded-full hover:bg-emerald-50 transition-colors text-sm md:text-base text-center"
+                >
+                  案件をすべて見る
+                </Link>
+                <Link
+                  href="/request"
+                  className="bg-emerald-500 text-white font-bold px-8 py-3 rounded-full border-2 border-emerald-400 hover:bg-emerald-400 transition-colors text-sm md:text-base text-center"
+                >
+                  無料で資料請求する
+                </Link>
+              </div>
+            </div>
+
+            <div className="relative hidden md:block">
+              <div className="relative h-80 rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/images/hero.jpg"
+                  alt="独立開業・一人ビジネスのイメージ"
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 1200px) 50vw, 600px"
+                />
+                <div className="absolute inset-0 bg-emerald-900/20" />
+              </div>
+              {/* Floating stats card */}
+              <div className="absolute -bottom-4 -left-4 bg-white text-gray-900 rounded-xl shadow-xl px-5 py-3">
+                <p className="text-xs text-gray-500">掲載案件数</p>
+                <p className="text-2xl font-black text-emerald-700">{cases.length}件+</p>
+              </div>
+              <div className="absolute -top-4 -right-4 bg-white text-gray-900 rounded-xl shadow-xl px-5 py-3">
+                <p className="text-xs text-gray-500">開業最短</p>
+                <p className="text-2xl font-black text-emerald-700">1週間</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -71,12 +100,24 @@ export default function HomePage() {
               <Link
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
-                className="flex flex-col items-center gap-2 bg-white border border-gray-200 rounded-xl p-4 hover:border-emerald-300 hover:shadow-sm transition-all group"
+                className="relative group overflow-hidden rounded-xl border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
               >
-                <Icon size={28} className="text-emerald-600 group-hover:text-emerald-700" />
-                <span className="text-xs font-semibold text-gray-700 group-hover:text-emerald-700 text-center">
-                  {cat.name}
-                </span>
+                <div className="relative h-24">
+                  <Image
+                    src={cat.imageUrl}
+                    alt={cat.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                  />
+                  <div className="absolute inset-0 bg-emerald-900/50 group-hover:bg-emerald-900/40 transition-colors" />
+                </div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
+                  <Icon size={22} className="text-white" />
+                  <span className="text-xs font-bold text-white text-center leading-tight px-1">
+                    {cat.name}
+                  </span>
+                </div>
               </Link>
             );
           })}
@@ -87,9 +128,7 @@ export default function HomePage() {
       {popularCases.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 pb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl md:text-2xl font-black text-gray-900">
-              人気の案件
-            </h2>
+            <h2 className="text-xl md:text-2xl font-black text-gray-900">人気の案件</h2>
             <Link href="/cases" className="text-sm text-emerald-600 hover:underline font-medium">
               すべて見る →
             </Link>
@@ -106,9 +145,7 @@ export default function HomePage() {
       {newCases.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 pb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl md:text-2xl font-black text-gray-900">
-              新着案件
-            </h2>
+            <h2 className="text-xl md:text-2xl font-black text-gray-900">新着案件</h2>
             <Link href="/cases" className="text-sm text-emerald-600 hover:underline font-medium">
               すべて見る →
             </Link>
@@ -125,9 +162,7 @@ export default function HomePage() {
       <section className="bg-white border-y border-gray-200 py-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl md:text-2xl font-black text-gray-900">
-              すべての案件
-            </h2>
+            <h2 className="text-xl md:text-2xl font-black text-gray-900">すべての案件</h2>
             <Link href="/cases" className="text-sm text-emerald-600 hover:underline font-medium">
               もっと見る →
             </Link>
@@ -171,9 +206,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Banner */}
-      <section className="bg-emerald-700 text-white py-12">
-        <div className="max-w-2xl mx-auto px-4 text-center">
+      {/* CTA Banner with background image */}
+      <section className="relative overflow-hidden bg-emerald-700 text-white py-16">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/cta-banner.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-20"
+            sizes="100vw"
+          />
+        </div>
+        <div className="relative max-w-2xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-black mb-3">
             まず資料請求から始めよう
           </h2>

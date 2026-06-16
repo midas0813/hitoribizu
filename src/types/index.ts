@@ -13,6 +13,7 @@ export interface Category {
   name: string;
   description: string;
   icon: LucideIcon;
+  imageUrl: string;
 }
 
 export type InvestmentRange =
