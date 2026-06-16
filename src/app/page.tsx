@@ -1,65 +1,194 @@
-import Image from "next/image";
+import Link from "next/link";
+import CaseCard from "@/components/CaseCard";
+import { cases } from "@/data/cases";
+import { categories } from "@/data/categories";
 
-export default function Home() {
+export default function HomePage() {
+  const popularCases = cases.filter((c) => c.isPopular).slice(0, 3);
+  const newCases = cases.filter((c) => c.isNew).slice(0, 3);
+  const allCases = cases.slice(0, 6);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-600 text-white py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <p className="text-emerald-200 text-sm font-medium mb-3 tracking-wide uppercase">
+            一人開業・副業・小資本フランチャイズ比較
           </p>
+          <h1 className="text-3xl md:text-5xl font-black leading-tight mb-4">
+            ひとりで始める、<br className="md:hidden" />
+            自分の仕事を見つけよう
+          </h1>
+          <p className="text-emerald-100 text-base md:text-lg max-w-xl mx-auto leading-relaxed mb-8">
+            一人開業・副業・低資金・無店舗など、
+            小さく始めてしっかり稼げるフランチャイズ案件を無料で比較・資料請求できます。
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/cases"
+              className="bg-white text-emerald-700 font-bold px-8 py-3 rounded-full hover:bg-emerald-50 transition-colors text-sm md:text-base"
+            >
+              案件をすべて見る
+            </Link>
+            <Link
+              href="/request"
+              className="bg-emerald-500 text-white font-bold px-8 py-3 rounded-full border-2 border-emerald-400 hover:bg-emerald-400 transition-colors text-sm md:text-base"
+            >
+              無料で資料請求する
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Stats Bar */}
+      <section className="bg-white border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 py-5">
+          <div className="grid grid-cols-3 divide-x divide-gray-200 text-center">
+            {[
+              { value: `${cases.length}件+`, label: "掲載案件数" },
+              { value: "無料", label: "資料請求・相談" },
+              { value: "最短1週間", label: "開業可能案件あり" },
+            ].map((stat) => (
+              <div key={stat.label} className="px-4 py-2">
+                <p className="text-xl md:text-2xl font-black text-emerald-700">{stat.value}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Categories */}
+      <section className="max-w-6xl mx-auto px-4 py-12">
+        <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-6">
+          カテゴリから探す
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+          {categories.map((cat) => {
+            const Icon = cat.icon;
+            return (
+              <Link
+                key={cat.slug}
+                href={`/category/${cat.slug}`}
+                className="flex flex-col items-center gap-2 bg-white border border-gray-200 rounded-xl p-4 hover:border-emerald-300 hover:shadow-sm transition-all group"
+              >
+                <Icon size={28} className="text-emerald-600 group-hover:text-emerald-700" />
+                <span className="text-xs font-semibold text-gray-700 group-hover:text-emerald-700 text-center">
+                  {cat.name}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Popular Cases */}
+      {popularCases.length > 0 && (
+        <section className="max-w-6xl mx-auto px-4 pb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl md:text-2xl font-black text-gray-900">
+              人気の案件
+            </h2>
+            <Link href="/cases" className="text-sm text-emerald-600 hover:underline font-medium">
+              すべて見る →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {popularCases.map((c) => (
+              <CaseCard key={c.id} case_={c} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* New Cases */}
+      {newCases.length > 0 && (
+        <section className="max-w-6xl mx-auto px-4 pb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl md:text-2xl font-black text-gray-900">
+              新着案件
+            </h2>
+            <Link href="/cases" className="text-sm text-emerald-600 hover:underline font-medium">
+              すべて見る →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {newCases.map((c) => (
+              <CaseCard key={c.id} case_={c} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* All cases preview */}
+      <section className="bg-white border-y border-gray-200 py-12">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl md:text-2xl font-black text-gray-900">
+              すべての案件
+            </h2>
+            <Link href="/cases" className="text-sm text-emerald-600 hover:underline font-medium">
+              もっと見る →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {allCases.map((c) => (
+              <CaseCard key={c.id} case_={c} />
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/cases"
+              className="inline-block bg-emerald-600 text-white font-bold px-10 py-3 rounded-full hover:bg-emerald-700 transition-colors"
+            >
+              全{cases.length}件の案件を見る
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="max-w-6xl mx-auto px-4 py-16">
+        <h2 className="text-xl md:text-2xl font-black text-gray-900 text-center mb-10">
+          ヒトリビズの使い方
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[
+            { step: "01", title: "案件を探す", desc: "カテゴリや資金額から自分に合う案件を絞り込む" },
+            { step: "02", title: "資料請求", desc: "気になる案件を選んで無料で資料を請求する" },
+            { step: "03", title: "説明会に参加", desc: "FC本部の説明会でビジネスの詳細を確認する" },
+            { step: "04", title: "開業へ", desc: "契約・研修を経て自分のビジネスをスタート" },
+          ].map((item) => (
+            <div key={item.step} className="text-center">
+              <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-black text-lg mx-auto mb-3">
+                {item.step}
+              </div>
+              <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
+              <p className="text-sm text-gray-600 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Banner */}
+      <section className="bg-emerald-700 text-white py-12">
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-black mb-3">
+            まず資料請求から始めよう
+          </h2>
+          <p className="text-emerald-200 mb-6 text-sm md:text-base">
+            完全無料。しつこい営業はありません。
+            複数の案件をまとめて請求できます。
+          </p>
+          <Link
+            href="/request"
+            className="inline-block bg-white text-emerald-700 font-black px-10 py-4 rounded-full text-base hover:bg-emerald-50 transition-colors"
+          >
+            無料で資料請求する
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }
